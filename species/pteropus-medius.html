@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pteropus medius – Bats of the Palearctic</title>
+<meta name="description" content="Pteropus medius (Indian Flying Fox): profile and map of 35 records in the Palearctic.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="../assets/atlas.css?v=20261023153325">
+<style>:root { --brand: #1f3a68; }</style>
+<link rel="icon" href="../assets/favicon.png" type="image/png">
+</head>
+<body>
+<header class="site-header">
+  <a class="wordmark" href="../index.html"><img src="../assets/logo.jpg" alt=""><span>Bats of the Palearctic</span></a>
+  <nav class="site-nav" aria-label="Main"><a href="../index.html">Map</a><a href="../species/index.html" aria-current="page">Species</a><a href="../about.html">About</a></nav>
+</header>
+
+<main class="atlas species">
+  <aside class="side"><p class="crumbs"><a href="index.html#pteropodidae">Pteropodidae</a> · <i>Pteropus</i></p><h1 class="taxon-title">Indian Flying Fox<span class="sci-sub">Pteropus medius</span></h1><p class="authority">Temminck, 1825</p><p class="common-de">German: Indischer Riesenflughund</p><figure class="photo"><img src="https://inaturalist-open-data.s3.amazonaws.com/photos/1878986/medium.jpg" alt="Pteropus medius" loading="lazy"><figcaption>(c) 360pixual, some rights reserved (CC BY-NC) · <a href="http://www.inaturalist.org/observations/1516829" target="_blank" rel="noopener">source</a></figcaption></figure><dl class="facts"><dt>Records</dt><dd>35</dd><dt>First record</dt><dd>1875</dd><dt>Latest record</dt><dd>2026</dd><dt>New in the last 12 months</dt><dd>1</dd><dt>Sources</dt><dd>GBIF (26), iNaturalist (9)</dd></dl><h2>Other names</h2><ul><li class="sci">Pteropus ariel</li><li class="sci">Pteropus assamensis</li><li class="sci">Pteropus kelaartii</li><li class="sci">Pteropus leucocephalus</li></ul><p class="links"><a href="https://www.inaturalist.org/taxa/1641421" target="_blank" rel="noopener">iNaturalist</a><a href="https://www.gbif.org/species/search?q=Pteropus+medius" target="_blank" rel="noopener">GBIF</a><a href="https://batnames.org/" target="_blank" rel="noopener">Bat Species of the World</a></p></aside>
+  <div class="map"><div id="map" role="region" aria-label="Map of records of Pteropus medius"></div>
+    <details class="map-legend" id="map-legend" open><summary class="legend-title">Records by period</summary><div id="periods" class="checks" role="group" aria-label="Show records by period"></div>
+      <div id="grid-legend" class="grid-legend in-map" hidden><span class="legend-title">Number of records per square</span><span class="legend-hint cell-size"></span><div class="ramp"></div><div class="ramp-labels"></div></div>
+      <div id="realm-box" class="checks" hidden><hr class="legend-sep"><label><input type="checkbox" id="realm-toggle" checked><span class="swatch area" style="background:rgba(31,58,104,0.10);border-color:var(--brand)"></span><span id="realm-label">Palearctic</span></label></div>
+      <div id="range-legend" class="checks" hidden><hr class="legend-sep"><label><input type="checkbox" id="range-toggle" checked><span class="swatch area" style="background:rgba(255,94,176,0.45);border-color:#ff5eb0"></span>Range</label>
+      <p class="legend-source">Community range map from <a href="https://www.inaturalist.org/taxa/1641421" target="_blank" rel="noopener">iNaturalist</a></p></div></details>
+  </div>
+</main>
+<script>window.ATLAS_V = "20261023153325";</script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="../data/realm.js?v=20261023153325"></script>
+<script src="../data/meta.js?v=20261023153325"></script>
+<script src="../data/species/pteropus-medius.js?v=20261023153325"></script>
+<script src="../assets/atlas.js?v=20261023153325"></script>
+<script>initSpecies(Object.assign({}, ATLAS_META, SPECIES));</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bats of the Palearctic – records map</title>
+<meta name="description" content="Map of 1,005,030 bat records of 200 species from iNaturalist and GBIF.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="assets/atlas.css?v=20261023153325">
+<style>:root { --brand: #1f3a68; }</style>
+<link rel="icon" href="assets/favicon.png" type="image/png">
+</head>
+<body>
+<header class="site-header">
+  <a class="wordmark" href="index.html"><img src="assets/logo.jpg" alt=""><span>Bats of the Palearctic</span></a>
+  <nav class="site-nav" aria-label="Main"><a href="index.html" aria-current="page">Map</a><a href="species/index.html">Species</a><a href="about.html">About</a></nav>
+</header>
+
+<main class="atlas home">
+  <aside class="side" aria-label="Filters">
+    <p id="summary" class="summary" aria-live="polite"></p>
+    <button id="toggle-filters" class="toggle-filters" aria-expanded="false" aria-controls="filters-body">Filters</button>
+    <div class="filters-body" id="filters-body">
+      <fieldset class="filter">
+        <legend>Taxon</legend>
+        <select id="f-family" aria-label="Family"></select>
+        <select id="f-genus" aria-label="Genus"></select>
+        <select id="f-taxon" aria-label="Species"></select>
+      </fieldset>
+      <fieldset class="filter">
+        <legend>Year</legend>
+        <div class="years"><input id="f-from" type="number" inputmode="numeric" aria-label="From year">
+        <span>to</span><input id="f-to" type="number" inputmode="numeric" aria-label="To year"></div>
+      </fieldset>
+      <fieldset class="filter area"><legend>Area</legend>
+        <button id="draw-area" class="area-btn" type="button">Draw area on map</button>
+        <button id="clear-area" class="area-btn secondary" type="button" hidden>Remove area</button>
+        <a id="area-species" class="area-btn secondary area-link" href="species/index.html" hidden>Species in this area →</a>
+        <p id="area-hint" class="legend-sub" hidden>Click on the map to set the corners of the area. Click the first point (or double-click) to finish; Esc cancels.</p>
+        <p id="area-note" class="legend-sub" hidden>Only records inside your area are shown. The numbers near the edge of the area are approximate; zoom in to see exactly which records lie inside.</p>
+      </fieldset>
+      <fieldset class="filter checks"><legend>Source</legend><div id="f-sources"></div></fieldset>
+      <fieldset class="filter checks"><legend>iNaturalist quality grade</legend><div id="f-grades"></div></fieldset>
+      <fieldset class="filter checks"><legend>Map</legend>
+        <div id="grid-legend" class="grid-legend" hidden><span class="legend-title">Number of records per square</span><span class="legend-hint cell-size"></span><div class="ramp"></div><div class="ramp-labels"></div></div>
+        <p class="legend-sub">Zoomed in – circles by family:</p><div id="legend"></div></fieldset>
+      <fieldset class="filter checks" id="realm-box" hidden><legend>Map layers</legend>
+        <label><input type="checkbox" id="realm-toggle" checked><span class="swatch area" style="background:rgba(31,58,104,0.10);border-color:var(--brand)"></span><span id="realm-label">Palearctic</span></label></fieldset>
+      <button id="reset" class="reset" type="button">Reset filters</button>
+      <p class="note">Zoomed out, records are counted in squares. Zoom in (or click a square) to see each record as a circle
+      the size of its reported location accuracy. Solid dots are records without a reported accuracy.
+      Locations are shown as published by the source; sensitive records are already generalised there.
+      Where a dataset reports the same species several times at exactly the same place on the same day, these are shown
+      as one record. For the most frequently recorded species, all records in the same 1 km square and year are shown as one record.</p>
+      <p class="credit">Developed by Milan Pestalozzi</p>
+    </div>
+  </aside>
+  <div class="map"><div id="map" role="region" aria-label="Map of bat records"></div></div>
+</main>
+<script>window.ATLAS_V = "20261023153325";</script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="data/realm.js?v=20261023153325"></script>
+<script src="data/atlas.js?v=20261023153325"></script>
+<script src="assets/atlas.js?v=20261023153325"></script>
+<script>initHome(ATLAS);</script>
+</body>
+</html>
