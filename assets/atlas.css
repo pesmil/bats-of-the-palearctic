@@ -1,0 +1,386 @@
+/* Bats of the Palearctic – gemeinsames Stylesheet
+   Angelehnt an iNaturalist: weisser Grund, Schrift Lato, eine Akzentfarbe (Blau).
+   Die Akzentfarbe kommt aus config.json (webseite.farbe) und wird in jede Seite als --brand gesetzt.
+   Datenfarben (Familien, Zeiträume) stehen in atlas.js, damit Karte und Legende übereinstimmen. */
+
+:root {
+  --brand: #1f3a68;
+  --brand-soft: color-mix(in srgb, var(--brand) 8%, white);
+  --brand-line: color-mix(in srgb, var(--brand) 22%, white);
+  --bg: #ffffff;
+  --bg-alt: #f5f6f8;
+  --ink: #333333;
+  --muted: #6f6f6f;
+  --line: #dddddd;
+  --focus: #f0a71a;
+  --font: "Lato", "Helvetica Neue", Arial, sans-serif;
+  --header-h: 60px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+i, em, .sci { font-style: italic; }
+
+/* ---------- Kopfzeile ---------- */
+.site-header {
+  height: var(--header-h);
+  display: flex; align-items: center; gap: 24px;
+  padding: 0 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  position: relative; z-index: 5;
+}
+.wordmark {
+  display: flex; align-items: center; gap: 14px; height: 100%;
+  color: #000; font-size: 25px; font-weight: 400; letter-spacing: 0;
+  white-space: nowrap;
+}
+.wordmark:hover { text-decoration: none; }
+/* Logo: Foto als abgerundetes Quadrat */
+.wordmark img {
+  width: 48px; height: 48px; border-radius: 10px; object-fit: cover; flex: none; display: block;
+}
+.site-nav { margin-left: auto; display: flex; gap: 2px; height: 100%; }
+.site-nav a {
+  display: flex; align-items: center; padding: 0 14px;
+  color: #000; font-weight: 700; font-size: 15px;
+  border-bottom: 3px solid transparent;
+}
+.site-nav a:hover { color: var(--brand); text-decoration: none; }
+.site-nav a[aria-current="page"] { color: var(--brand); border-bottom-color: var(--brand); }
+
+/* ---------- Kartenseiten (Start, Art) ---------- */
+.atlas {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  height: calc(100vh - var(--header-h));
+  height: calc(100dvh - var(--header-h));
+}
+.atlas.species { grid-template-columns: 400px 1fr; }
+.side {
+  overflow-y: auto;
+  background: var(--bg);
+  border-right: 1px solid var(--line);
+  padding: 20px 20px 32px;
+}
+.map { position: relative; min-height: 300px; background: var(--bg-alt); }
+.map > #map { position: absolute; inset: 0; }
+
+.summary { font-size: 15px; color: var(--muted); margin: 0 0 18px; }
+.summary strong { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.filter { border: 0; margin: 0 0 20px; padding: 0; }
+.filter legend {
+  display: block; padding: 0; margin-bottom: 7px;
+  font-weight: 700; font-size: 13px; color: var(--ink); letter-spacing: 0.01em;
+}
+.filter select, .filter input[type="number"], .search {
+  width: 100%; font: inherit; color: inherit;
+  padding: 7px 10px; border: 1px solid #c8c8c8; border-radius: 4px; background: #fff;
+}
+.filter select:focus, .filter input:focus, .search:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 3px var(--brand-line); }
+/* Tastatur: gut sichtbarer Rahmen wie bei Links und Knöpfen */
+.filter select:focus-visible, .filter input:focus-visible, .search:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.filter select + select { margin-top: 6px; }
+.years { display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; }
+.years span { color: var(--muted); }
+.checks label {
+  display: flex; align-items: center; gap: 8px;
+  padding: 3px 0; cursor: pointer;
+}
+.checks input { accent-color: var(--brand); }
+.checks .n { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 13px; }
+.swatch { width: 11px; height: 11px; border-radius: 50%; flex: none; border: 1.5px solid; }
+.swatch.area { border-radius: 2px; width: 14px; }
+
+.note { font-size: 13px; color: var(--muted); margin: 22px 0 0; max-width: 34em; }
+.reset {
+  font: inherit; font-size: 14px; font-weight: 700; color: var(--brand); background: none;
+  border: 0; padding: 0; cursor: pointer;
+}
+.reset:hover { text-decoration: underline; }
+.toggle-filters { display: none; }
+
+/* Popup */
+.maplibregl-popup-content { font: 14px/1.45 var(--font); padding: 12px 14px; border-radius: 6px; max-height: 320px; overflow-y: auto; }
+.pop-rec + .pop-rec { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 8px; }
+.pop-rec .sci { font-size: 15px; font-weight: 700; }
+.pop-rec .meta { color: var(--muted); font-size: 13px; }
+
+/* Legende auf der Karte (Artseite) */
+.map-legend {
+  position: absolute; left: 12px; top: 12px; z-index: 2;
+  background: rgba(255, 255, 255, 0.96); border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  padding: 10px 14px 8px; min-width: 220px; max-width: 300px; font-size: 14px;   /* schmal: lange Biomnamen brechen um */
+}
+.legend-title { margin: 0 0 4px; font-weight: 700; font-size: 13px; cursor: pointer; }
+details.map-legend:not([open]) .legend-title { margin: 0; }
+details.map-legend:not([open]) { min-width: 0; padding-bottom: 10px; }
+.legend-sep { border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
+.legend-source { font-size: 12px; color: var(--muted); margin: 2px 0 0 27px; }
+
+/* ---------- Artprofil ---------- */
+.crumbs { font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+.crumbs a { color: var(--muted); }
+.taxon-title { font-size: 27px; line-height: 1.15; font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+.taxon-title .sci-sub { display: block; font-size: 19px; font-weight: 400; font-style: italic; color: var(--muted); margin-top: 4px; }
+.authority { font-size: 14px; color: var(--muted); margin: 2px 0 0; }
+.common-de { color: var(--muted); margin: 6px 0 0; font-size: 14px; }
+
+.photo { margin: 18px 0 0; }
+.photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; display: block; background: var(--bg-alt); }
+.photo figcaption { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.photo.empty { border: 1px dashed var(--line); border-radius: 4px; color: var(--muted); font-size: 13.5px; padding: 12px 14px; }
+
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 5px 16px; margin: 20px 0 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-variant-numeric: tabular-nums; }
+.side h2 { font-weight: 700; font-size: 16px; margin: 26px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.side ul { margin: 0; padding-left: 18px; }
+.side li + li { margin-top: 4px; }
+.split-note { background: var(--brand-soft); border-left: 3px solid var(--brand); padding: 10px 12px; margin: 18px 0 0; font-size: 14px; }
+.links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 22px 0 0; font-size: 14px; font-weight: 700; }
+
+/* ---------- Textseiten (Artenliste, About) ---------- */
+.page-band { background: var(--brand); color: #fff; }
+.page-band .inner { max-width: 960px; margin: 0 auto; padding: 30px 20px 26px; }
+.page-band h1 { font-size: 32px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em; }
+.page-band p { margin: 0; max-width: 42em; color: color-mix(in srgb, #fff 82%, var(--brand)); font-size: 16px; }
+.page { max-width: 960px; margin: 0 auto; padding: 28px 20px 64px; }
+.page h2 { font-size: 20px; font-weight: 700; margin: 34px 0 10px; }
+.page h2 .count { font-weight: 400; font-size: 14px; color: var(--muted); margin-left: 8px; }
+.page p, .page li { max-width: 44em; }
+.page .search { max-width: 380px; margin: 0 0 4px; }
+
+table.species-table { width: 100%; border-collapse: collapse; font-size: 15px; table-layout: fixed; }
+.species-table th:nth-child(1) { width: 40%; }
+.species-table th:nth-child(2) { width: 36%; }
+.species-table th:nth-child(3), .species-table th:nth-child(4) { width: 12%; }
+.species-table th { text-align: left; font-weight: 700; font-size: 13px; color: var(--muted); padding: 7px 10px 7px 0; border-bottom: 2px solid var(--line); }
+.species-table td { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.species-table td.num, .species-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.species-table tr:hover td { background: var(--brand-soft); }
+.species-table .sci { font-weight: 700; }
+.empty-state { color: var(--muted); padding: 20px 0; }
+
+/* ---------- schmale Bildschirme ---------- */
+@media (max-width: 760px) {
+  :root { --header-h: 56px; }
+  .site-header { gap: 10px; padding: 0 8px 0 12px; }
+  .wordmark { font-size: 18px; gap: 10px; }
+  .wordmark img { width: 40px; height: 40px; border-radius: 8px; }
+  .site-nav a { padding: 0 8px; font-size: 14px; }
+  .atlas, .atlas.species { display: flex; flex-direction: column; height: auto; }
+  .atlas .map { height: 62vh; order: 1; }
+  .atlas .side { order: 2; border-right: 0; border-top: 1px solid var(--line); }
+  .atlas.home .side { order: 0; padding: 12px 16px; border-top: 0; border-bottom: 1px solid var(--line); }
+  .atlas.home .side .filters-body { display: none; }
+  .atlas.home .side.open .filters-body { display: block; margin-top: 14px; }
+  .toggle-filters {
+    display: inline-block; font: inherit; font-weight: 700; color: #fff;
+    background: var(--brand); border: 0; border-radius: 4px; padding: 7px 14px; cursor: pointer;
+  }
+  .atlas.home .summary { margin-bottom: 8px; }
+  .taxon-title { font-size: 23px; }
+  .map-legend { left: 8px; top: 8px; min-width: 0; padding: 8px 10px 6px; font-size: 13px; }
+  .species-table .hide-sm { display: none; }
+  .species-table th:nth-child(1) { width: auto; }
+  .species-table th:nth-child(3) { width: 30%; }
+  .page-band h1 { font-size: 26px; }
+}
+@media (max-width: 420px) {
+  .site-header { gap: 4px; }
+  .wordmark { font-size: 15px; gap: 8px; }
+  .site-nav a { padding: 0 6px; font-size: 13.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+@media (max-width: 380px) {
+  .wordmark { white-space: normal; line-height: 1.1; font-size: 15px; }
+}
+
+/* Übersichtsraster und Nachladen */
+.grid-legend { margin: 2px 0 10px; font-size: 13px; }
+.grid-legend.in-map { margin: 10px 0 0; padding-top: 8px; border-top: 1px solid #e3e6ea; }
+.grid-legend .legend-title { display: block; margin-bottom: 4px; font-weight: 700; }
+.grid-legend .ramp { display: flex; height: 10px; border-radius: 2px; overflow: hidden; max-width: 200px; }
+.grid-legend .ramp span { flex: 1; }
+.grid-legend .ramp-labels { display: flex; justify-content: space-between; max-width: 200px; color: #5f6b72; font-size: 12px; }
+.legend-sub { margin: 6px 0 4px; font-size: 13px; color: #5f6b72; }
+.map-status { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 2;
+  background: rgba(255,255,255,0.95); border: 1px solid #d5dbe0; border-radius: 999px;
+  padding: 4px 12px; font-size: 13px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+.grid-legend .legend-hint { display: block; margin: 0 0 6px; color: #5f6b72; font-size: 12px; line-height: 1.35; max-width: 260px; }
+.country-list { padding-left: 18px; }
+.country-list li { margin: 2px 0; }
+/* Gattungs-Zwischenzeilen in der Artenliste */
+.species-table tr.genus-row th { padding: 16px 10px 6px 0; border-bottom: 1px solid var(--line); text-align: left;
+  font-size: 15px; font-weight: 700; color: var(--text, #1f2421); background: none; }
+.species-table tr.genus-row:first-child th { padding-top: 6px; }
+.species-table tr.genus-row .count { margin-left: 8px; font-weight: 400; font-size: 13px; color: var(--muted); }
+.species-table tr.genus-row:hover th { background: none; }
+.species-table tr[data-q] td:first-child { padding-left: 14px; }
+/* Gebiet zeichnen */
+[hidden] { display: none !important; }   /* «hidden» gilt immer, auch bei Elementen mit eigenem display */
+.area-btn { display:block; width:100%; margin:0 0 6px; padding:8px 10px; border:1px solid var(--brand); border-radius:6px;
+  background:var(--brand); color:#fff; font:inherit; font-size:14px; cursor:pointer; }
+.area-btn.secondary { background:#fff; color:var(--brand); }
+.area-btn:hover { filter:brightness(1.1); }
+/* Artenliste mit Vorschaubild */
+.species-table.with-photos th.c-photo, .species-table.with-photos td.c-photo { width:78px; }
+.species-table.with-photos th:nth-child(2) { width:auto; }
+.species-table.with-photos th:nth-child(3), .species-table.with-photos th:nth-child(4) { width:90px; }
+.species-table.with-photos td { vertical-align:middle; }
+.species-table.with-photos tr[data-q] td:first-child { padding-left:0; }
+.species-table .thumb { display:block; width:64px; height:48px; border-radius:6px; overflow:hidden;
+  background:var(--brand-soft, #e8eef5); }
+.species-table .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.species-table .en { font-size:13px; color:var(--muted, #5f6b72); margin-top:2px; font-weight:400; }
+@media (max-width: 760px) {
+  .species-table.with-photos th:nth-child(2) { width:auto; }
+  .species-table.with-photos th:nth-child(3) { width:80px; }
+}
+
+/* Entwickler-Hinweis */
+.site-footer { max-width: 960px; margin: 0 auto; padding: 18px 20px 28px; border-top: 1px solid var(--line, #e3e6ea);
+  font-size: 13px; color: var(--muted); }
+.site-footer a, .credit a { color: inherit; }
+.credit { font-size: 12px; color: var(--muted); margin: 18px 0 0; }
+
+/* Artenliste: Hinweis auf das gezeichnete Gebiet */
+.area-banner { border-left: 4px solid var(--brand); background: color-mix(in srgb, var(--brand) 7%, #fff);
+  padding: 10px 14px; margin: 0 0 18px; border-radius: 0 6px 6px 0; font-size: 15px; }
+.area-banner p { margin: 4px 0; max-width: none; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--brand); text-decoration: underline; cursor: pointer; }
+
+/* Link «Show the N species in this area» unter «Remove area» */
+.area-link { display: block; text-align: center; text-decoration: none; box-sizing: border-box; }
+
+/* Artseite: Kasten «Only records in your area» oben in der Legende */
+.area-box label { font-weight: 600; }
+.area-box .legend-source { margin: 2px 0 0; }
+
+/* Artenliste: Kennzeichnung von Artkomplexen */
+.complex-tag { font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 4px;
+  padding: 0 5px; margin-left: 4px; vertical-align: 1px; font-style: normal; }
+
+/* Länderauswahl über «Draw area on map» */
+.filter .country-select { margin: 0 0 8px; }
+
+/* Artseite: Gebiet direkt auf der Artkarte zeichnen (Knöpfe in der Legende) */
+.map-legend .area-btn.small { width: auto; display: inline-block; margin: 2px 6px 4px 0; padding: 4px 9px; font-size: 13px; }
+.map-legend .area-tools { margin-top: 6px; }
+.map-legend .area-hint { max-width: 240px; margin: 2px 0 4px; font-size: 12px; }
+
+/* Seitenteil einklappen: Knopf am linken Kartenrand, danach nur noch die Karte */
+.atlas.side-collapsed, .atlas.species.side-collapsed { grid-template-columns: 1fr; }
+.atlas.side-collapsed > .side { display: none; }
+.side-toggle { position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 5;
+  width: 22px; height: 56px; padding: 0; border: 1px solid var(--line); border-left: 0; border-radius: 0 6px 6px 0;
+  background: #fff; color: var(--brand); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.12); }
+.side-toggle:hover { background: var(--brand-soft); }
+.atlas.species .map-legend { left: 32px; }   /* Platz für den Knopf */
+@media (max-width: 760px) {
+  .side-toggle { display: none; }
+  .atlas.side-collapsed > .side { display: block; }
+  .atlas.species .map-legend { left: 8px; }
+}
+
+/* Nachweise im Gebiet als Tabelle: Fenster unten über der Karte */
+.map-legend .area-tools .area-btn.small { margin-right: 4px; }
+.rec-panel { position: absolute; left: 0; right: 0; bottom: 0; height: 48%; z-index: 4; display: flex; flex-direction: column;
+  background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.14); }
+.rec-panel.gross { height: 88%; }
+.rec-head { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; padding: 8px 12px 8px 30px; border-bottom: 1px solid var(--line); }
+.rec-title { font-size: 15px; font-weight: 700; margin: 0; }
+.rec-info { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.rec-actions { margin-left: auto; display: flex; gap: 6px; }
+.rec-btn { font: inherit; font-size: 13px; padding: 3px 10px; border: 1px solid var(--brand); border-radius: 4px;
+  background: #fff; color: var(--brand); cursor: pointer; }
+.rec-btn:disabled { opacity: 0.45; cursor: default; }
+.rec-body { overflow: auto; flex: 1; padding: 0 12px 10px 30px; }
+.rec-msg { color: var(--muted); font-size: 13px; margin: 10px 0; }
+.rec-table { border-collapse: collapse; font-size: 13px; width: 100%; }
+.rec-table th { position: sticky; top: 0; background: #fff; text-align: left; font-weight: 700; color: var(--muted); white-space: nowrap;
+  padding: 7px 12px 6px 0; border-bottom: 2px solid var(--line); cursor: pointer; user-select: none; }
+.rec-table th:hover { color: var(--brand); }
+.rec-table td { padding: 5px 12px 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; white-space: nowrap; }
+.rec-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.rec-table td.rec-ds { white-space: normal; min-width: 180px; max-width: 360px; color: var(--muted); }
+.rec-table tbody tr { cursor: pointer; }
+.rec-table tbody tr:hover td { background: var(--brand-soft); }
+.rec-n { color: var(--muted); font-size: 12px; }
+@media (max-width: 760px) {
+  .rec-panel, .rec-panel.gross { height: 100%; }
+  .rec-head, .rec-body { padding-left: 12px; }
+}
+/* Knöpfe der Tabelle: alle gleich hoch, Symbolknöpfe quadratisch */
+.rec-btn { height: 28px; display: inline-flex; align-items: center; justify-content: center; }
+.rec-btn.rec-icon { width: 30px; padding: 0; }
+.rec-btn:not(:disabled):hover { background: var(--brand-soft); }
+
+/* Logo des Entwicklers hinter «Developed by …» */
+.dev-logo { width: 36px; height: 36px; border-radius: 50%; vertical-align: middle; margin: -8px 0 -6px 8px; }
+
+/* Biom-Ebene (RESOLVE 2017) unter «Map layers» */
+.biome-swatch { background: linear-gradient(135deg, #79c043 0 33%, #f3e2b8 33% 66%, #b9a2e3 66%); border-color: #5b6b66; }
+.biome-legend { margin: 4px 0 2px 2px; font-size: 12px; line-height: 1.3; }
+.biome-legend .biome-row { display: flex; align-items: flex-start; gap: 6px; margin: 3px 0; }
+.biome-legend .biome-row .swatch { flex: none; margin-top: 2px; }
+.biome-legend .swatch { width: 12px; height: 10px; border-width: 1px; opacity: 0.85; }
+label.loading::after { content: " loading…"; color: var(--muted, #777); font-size: 12px; }
+.biome-legend .legend-source { margin: 4px 0 0; }
+
+/* ---------- Handy (nur schmale Bildschirme; Computer unverändert) ---------- */
+/* Schieber «Location accuracy» (Filter der Karte und «Map layers» der Artseiten) */
+.acc-filter { font-size: 14px; }
+.acc-wert { color: var(--muted); margin: 0; font-size: 12px; font-weight: 400; line-height: 1.4; }
+.acc-range { width: 100%; margin: 4px 0 0; accent-color: var(--brand); cursor: pointer; display: block; }
+.acc-ticks { position: relative; height: 16px; margin: 0 8px 4px; font-size: 10.5px; color: var(--muted); }
+.acc-ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.acc-ticks span:nth-child(1) { left: 0; }
+.acc-ticks span:nth-child(2) { left: 16.667%; }
+.acc-ticks span:nth-child(3) { left: 33.333%; }
+.acc-ticks span:nth-child(4) { left: 50%; }
+.acc-ticks span:nth-child(5) { left: 66.667%; }
+.acc-ticks span:nth-child(6) { left: 83.333%; }
+.acc-ticks span:nth-child(7) { left: 100%; }
+.acc-ticks span.on { color: var(--brand); font-weight: 700; }
+.acc-ohne { display: flex; align-items: center; gap: 8px; padding: 3px 0; cursor: pointer; }
+.acc-ohne input { accent-color: var(--brand); }
+.acc-box .legend-title { display: block; cursor: default; }
+.map-legend .acc-filter { font-size: 13px; }
+.map-legend .acc-ticks { font-size: 10px; }
+
+@media (max-width: 760px) {
+  /* Startseite: Karte füllt den Bildschirm, die Filter liegen als Schublade darüber und starten eingeklappt.
+     In der Schublade scrollt man nur bis zu ihrem Ende, nicht weiter auf die Karte. */
+  .atlas.home { display: block; position: relative; overflow: hidden;
+    height: calc(100vh - var(--header-h)); height: calc(100dvh - var(--header-h)); }
+  .atlas.home > .map { position: absolute; inset: 0; height: auto; }
+  .atlas.home > .side { position: absolute; top: 0; left: 0; bottom: 0; z-index: 6; box-sizing: border-box;
+    width: min(86vw, 360px); padding: 16px 16px 32px; overflow-y: auto; overscroll-behavior: contain;
+    border: 0; border-right: 1px solid var(--line); box-shadow: 2px 0 12px rgba(0, 0, 0, 0.18); }
+  .atlas.home .side .filters-body { display: block; margin-top: 0; }
+  .atlas.home .toggle-filters { display: none; }
+  .atlas.home.side-collapsed > .side { display: none; }
+  .atlas.home .side-toggle { display: flex; width: 30px; height: 64px; z-index: 7; }
+  .atlas.home:not(.side-collapsed) .side-toggle { left: min(86vw, 360px); }
+  /* Artseite: zuerst das Artprofil, darunter die Karte */
+  .atlas.species > .side { order: 1; border-top: 0; border-bottom: 1px solid var(--line); }
+  .atlas.species > .map { order: 2; }
+  /* Artenübersicht: Linien und Zahlen bis zum rechten Rand (die ausgeblendete Spalte «Latest» belegt sonst Platz) */
+  .species-table.with-photos { table-layout: auto; }
+  .species-table.with-photos th.c-photo, .species-table.with-photos td.c-photo { width: 74px; }
+  .species-table.with-photos th.num, .species-table.with-photos td.num { width: 1%; white-space: nowrap; padding-right: 0; padding-left: 8px; }
+}
